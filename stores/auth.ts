@@ -1,36 +1,59 @@
 import { defineStore } from 'pinia';
 
-const URL = 'https://dummyjson.com/docs/';
+const URL = 'https://dummyjson.com/auth';
 
 export const useAuthStore = defineStore('auth', () => {
-  const isAuthenticated = ref(false)
-  const user = ref({} as IJwt)
-  const userLogin = ref({
-    username: '',
-    password: '',
-    expiresInMins: 30
-  } as IUserLogin)
 
-  const getterUserLogin = computed(() => userLogin)
+  const expiresInMins = 1 // сколько живет accessToken
+  const user = ref({} as IUserInfo)
 
-  const authUser = async () => {
-    if (userLogin.value.username && userLogin.value.password) {
+  const accessToken = useCookie('accessToken')
+  const refreshToken = useCookie('refreshToken')
+
+  const authUser = async (userLogin: IUserLogin) => {
+    if (userLogin.username && userLogin.password) {
+      userLogin.expiresInMins = expiresInMins
       try {
-        const res = await $fetch("https://dummyjson.com/auth/login", {
+        const data = await $fetch(`${URL}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userLogin.value)
+          body: JSON.stringify(userLogin)
+        });
+        if (data) {
+          accessToken.value = (data as IUserInfo).accessToken;
+          refreshToken.value = (data as IUserInfo).refreshToken;
         }
-        );
-        user.value = res as IJwt
-        isAuthenticated.value = true
-        navigateTo('/')
-      } catch (err) {
-        alert('Неправильное имя или пароль')
+      } catch (e) {
+        (e as Error).message.includes('400') ? alert('Неправильное имя или пароль') : alert('Ошибка соединения')
       }
     } else alert('заполни все поля')
   }
 
+  const refreshAuthUser = async () => {
+    try {
+      const data = await $fetch(`${URL}/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          refreshToken: `${refreshToken.value}`,
+          expiresInMins: expiresInMins,
+        }),
+      });
+      if (data) {
+        accessToken.value = (data as IUserInfo).accessToken;
+        refreshToken.value = (data as IUserInfo).refreshToken;
+      }
+    } catch (e) {
+      (e as Error).message.includes('400') ? alert('Неправильное имя или пароль') : alert('Ошибка соединения')
+    }
+  }
 
-  return { isAuthenticated, user, userLogin, getterUserLogin, authUser }
-})
+  const logUserOut = () => {
+    accessToken.value = '';
+    refreshToken.value = null;
+  }
+
+
+  return { user, accessToken, refreshToken, authUser, refreshAuthUser, logUserOut }
+}
+)

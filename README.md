@@ -1,5 +1,5 @@
 # Nuxt To Do
 
-Настойка авторизации и загрузка списка задач. Редактирование списка.
+Настойка авторизации и вывод имени пользователя
 
-https://dummyjson.com/docs/
+[https://dummyjson.com/docs/](https://dummyjson.com/auth)

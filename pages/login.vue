@@ -1,41 +1,57 @@
 <script lang="ts" setup>
 const authStore = useAuthStore();
+const router = useRouter();
 
+const userInput = reactive({
+  username: "",
+  password: ""
+});
+
+const userInputAuth = async () => {
+  await authStore.authUser(userInput);
+  router.push("/");
+};
 </script>
 
 <template>
   <div class="container">
-  <ClientOnly>
-  <div class="dark">
-    <div class="modal">
-      <div class="title">Авторизация</div>
-      <form class="text-field">
-        <label class="text-field__label" for="login">Логин</label>
-        <input
-          class="text-field__input"
-          type="text"
-          name="login"
-          id="login"
-          placeholder="Введите ваш логин"
-          v-model="authStore.getterUserLogin.value.username"
-        />
-      </form>
-      <form class="text-field">
-        <label class="text-field__label" for="password">Пароль</label>
-        <input
-          class="text-field__input"
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Введите ваш пароль"
-          v-model="authStore.getterUserLogin.value.password"
-          autocomplete="on"
-        />
-      </form>
-      <div class="btn" @click.prevent = "authStore.authUser">Отправить</div>
-    </div>
-  </div>
-  </ClientOnly>
+    <ClientOnly>
+      <div class="dark">
+        <div class="modal">
+          <div class="title">Авторизация</div>
+          <form class="text-field" @submit.prevent="userInputAuth">
+            <div>
+              <label class="text-field__label" for="login">Логин</label>
+
+              <input
+                class="text-field__input"
+                type="text"
+                name="login"
+                id="login"
+                placeholder="Введите ваш логин"
+                v-model="userInput.username"
+              />
+            </div>
+
+            <div>
+              <label class="text-field__label" for="password">Пароль</label>
+
+              <input
+                class="text-field__input"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Введите ваш пароль"
+                v-model="userInput.password"
+                autocomplete="on"
+              />
+            </div>
+
+            <button class="btn">Отправить</button>
+          </form>
+        </div>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -49,6 +65,12 @@ const authStore = useAuthStore();
 
 label {
   color: #022246;
+}
+
+.text-field {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .text-field__label {

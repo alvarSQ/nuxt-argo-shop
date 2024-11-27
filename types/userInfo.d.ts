@@ -1,4 +1,4 @@
-declare interface IJwt {
+declare interface IUserInfo {
     id: number,
     username: string,
     email: string,
