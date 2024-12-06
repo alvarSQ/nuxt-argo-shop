@@ -8,22 +8,19 @@ const logout = () => {
   router.push("/login");
 };
 
-const { data, status, execute, refresh } = await useFetch(
-  "https://dummyjson.com/auth/me",
-  {
-    method: "GET",
-    headers: {'Authorization': `Bearer ${accessToken.value}`},
-    immediate: false,
-    watch: [accessToken],
+const { data, status, execute } = await useFetch('https://dummyjson.com/auth/me', {
+  onRequest({ options }) {
+    options.method?.concat('GET')
+    options.headers.set('Authorization', `Bearer ${accessToken.value}`)
+  },
+  async onResponseError({ response }) {
+    response.status === 401 ? await authStore.refreshAuthUser() : logout()    
   }
-);
+})
+
 
 const refreshData = async () => {
   await execute();
-  if (!data.value) {
-    await authStore.refreshAuthUser();
-    await refresh();
-  }
   authStore.user = data.value as IUserInfo;
 };
 
@@ -40,12 +37,6 @@ onMounted(() => refreshData());
       <p v-else>Привет {{ fN }}</p>
 
       <button class="btn" @click="logout">logout</button>
-      <!-- <nuxt-link
-      :to="{ name: 'posts', query: { page: 1 } }"
-      class="text-5xl font-extrabold text-zinc-400"
-      >Перейти к постам</nuxt-link
-    > -->
     </div>
-    <!-- <AuthInputs v-if="!authStore.user.username" /> -->
   </div>
 </template>
