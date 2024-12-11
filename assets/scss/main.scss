@@ -1,6 +1,9 @@
-@use 'reset' as *;
+@use 'common/navbar.scss' as *;
+@use 'utils/reset.scss' as *;
+@use 'utils/vars.scss' as *;
 
 @import url("https://fonts.googleapis.com/css?family=Inter");
+@import url("https://fonts.googleapis.com/css?family=Muller");
 
 html {
   height: 100%;
@@ -58,8 +61,8 @@ section,
 
 .container {
   margin: 0 auto;
-  max-width: 1170px;
-  font-family: Inter;
+  width: wmax(1416);
+  font-family: $mainFont;
   font-weight: 400;
 }
 
@@ -68,9 +71,9 @@ section,
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    height: calc(2.25rem + 3px);
+    height: 40px;
     font-size: 16px;
     border-radius: 10px;
     color: white;
-    background: #022246;
+    background: $primary-color;
 }

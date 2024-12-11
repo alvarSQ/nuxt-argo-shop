@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
     "dev": "nuxt dev",
+    "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@pinia/nuxt": "^0.7.0",
-    "@vueuse/nuxt": "^11.2.0",
+    "@vueuse/nuxt": "^12.0.0",
     "nuxt-typed-router": "^3.7.0",
     "sass": "^1.81.0"
   }

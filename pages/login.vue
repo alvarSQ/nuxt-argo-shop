@@ -8,7 +8,7 @@ const userInput = reactive({
 });
 
 const userInputAuth = async () => {
-  await authStore.authUser(userInput);
+  await authStore.authRefreshUser(userInput);
   router.push("/");
 };
 </script>

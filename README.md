@@ -1,5 +1,6 @@
-# Nuxt To Do
+# Интернет-магазин АРГО
 
-Настойка авторизации и вывод имени пользователя
+Интернет-магазин на Nuxt3 и TypeScript
 
-[https://dummyjson.com/docs/](https://dummyjson.com/auth)
+
+[https://dummyjson.com/docs/products](https://dummyjson.com/docs/products)

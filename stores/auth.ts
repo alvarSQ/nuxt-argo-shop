@@ -10,39 +10,28 @@ export const useAuthStore = defineStore('auth', () => {
   const accessToken = useCookie('accessToken')
   const refreshToken = useCookie('refreshToken')
 
-  const authUser = async (userLogin: IUserLogin) => {
-    if (userLogin.username && userLogin.password) {
-      userLogin.expiresInMins = expiresInMins
-      try {
-        const data = await $fetch(`${URL}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userLogin)
-        });
-        if (data) {
-          accessToken.value = (data as IUserInfo).accessToken;
-          refreshToken.value = (data as IUserInfo).refreshToken;
-        }
-      } catch (e) {
-        (e as Error).message.includes('400') ? alert('Неправильное имя или пароль') : alert('Ошибка соединения')
-      }
-    } else alert('заполни все поля')
-  }
 
-  const refreshAuthUser = async () => {
+  const authRefreshUser = async (userLogin?: IUserLogin) => {
+    let bodySet = {} as IUserLogin
+    let urlPlus = ''
+
+    if (userLogin) {
+      urlPlus = '/login';
+      bodySet = userLogin;
+      bodySet.expiresInMins = expiresInMins
+    } else if (refreshToken.value) {
+      urlPlus = '/refresh';
+      (bodySet as unknown as IUserInfo).refreshToken = `${refreshToken.value}`
+      bodySet.expiresInMins = expiresInMins
+    }
     try {
-      const data = await $fetch(`${URL}/refresh`, {
+      const data = await $fetch(`${URL}${urlPlus}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          refreshToken: `${refreshToken.value}`,
-          expiresInMins: expiresInMins,
-        }),
+        body: bodySet,
       });
-      if (data) {
-        accessToken.value = (data as IUserInfo).accessToken;
-        refreshToken.value = (data as IUserInfo).refreshToken;
-      }
+      accessToken.value = (data as IUserInfo).accessToken;
+      refreshToken.value = (data as IUserInfo).refreshToken;
     } catch (e) {
       (e as Error).message.includes('400') ? alert('Неправильное имя или пароль') : alert('Ошибка соединения')
     }
@@ -51,9 +40,10 @@ export const useAuthStore = defineStore('auth', () => {
   const logUserOut = () => {
     accessToken.value = '';
     refreshToken.value = null;
+    navigateTo('/login')
   }
 
 
-  return { user, accessToken, refreshToken, authUser, refreshAuthUser, logUserOut }
+  return { user, accessToken, refreshToken, authRefreshUser, logUserOut }
 }
 )
