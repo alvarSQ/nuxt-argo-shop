@@ -3,7 +3,28 @@
 @use 'utils/vars.scss' as *;
 
 @import url("https://fonts.googleapis.com/css?family=Inter");
-@import url("https://fonts.googleapis.com/css?family=Muller");
+
+@font-face {
+    font-family: 'Muller Extra';
+    src: url('@/assets/fonts/MullerExtraBold.eot');
+    src: url('@/assets/fonts/MullerExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('@/assets/fonts/MullerExtraBold.woff2') format('woff2'),
+        url('@/assets/fonts/MullerExtraBold.woff') format('woff'),
+        url('@/assets/fonts/MullerExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GTEestiPro';
+    src: url('@/assets/fonts/GTEestiProDisplay-Regular.eot');
+    src: url('@/assets/fonts/GTEestiProDisplay-Regular.eot?#iefix') format('embedded-opentype'),
+        url('@/assets/fonts/GTEestiProDisplay-Regular.woff2') format('woff2'),
+        url('@/assets/fonts/GTEestiProDisplay-Regular.woff') format('woff'),
+        url('@/assets/fontsGTEestiProDisplay-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
 
 html {
   height: 100%;
@@ -76,4 +97,10 @@ section,
     border-radius: 10px;
     color: white;
     background: $primary-color;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

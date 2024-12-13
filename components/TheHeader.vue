@@ -171,7 +171,7 @@ const isHeader = computed(() => (scrollY.value < 30 ? true : false));
 }
 
 .logo {
-  font-family: 'Muller ExtraBold';
+  font-family: 'Muller Extra';
   color: $primary-color;
   font-size: 32px;
   padding-top: 8px;
