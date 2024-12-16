@@ -4,9 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   // ssr: false,
   image: {
+    provider: 'netlify',
     format: ['webp'],
     dir: 'assets/images',
-    domains: ['dummyjson.com'],
+    domains: ['cdn.dummyjson.com'],
   },
   css: ['@/assets/scss/main.scss'],
   vite: {
