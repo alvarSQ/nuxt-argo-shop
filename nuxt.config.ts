@@ -6,7 +6,6 @@ export default defineNuxtConfig({
   image: {
     provider: 'netlify',
     format: ['webp'],
-    // dir: 'assets/images',
     domains: ['cdn.dummyjson.com'],
   },
   css: ['@/assets/scss/main.scss'],

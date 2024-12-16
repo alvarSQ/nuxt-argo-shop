@@ -16,10 +16,9 @@ const productsStore = useProductsStore();
 // const pending = computed(() => (status.value === 'pending' ? true : false));
 
 
-const removeSpaces = (title: string) => title = title.toLowerCase().replace(/\s/g, "-")
+// const removeSpaces = (title: string) => title = title.toLowerCase().replace(/\s/g, "-")
 
 onMounted(() => productsStore.loadProduct());
-// console.log(<NuxtImg>);
 </script>
 
 <template>

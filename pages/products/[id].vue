@@ -180,7 +180,7 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
 }
 
 .gray {
-  font-size: wmax(20);
+  font-size: wmax(16);
   color: #999;
 }
 
