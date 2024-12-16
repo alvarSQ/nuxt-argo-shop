@@ -24,7 +24,7 @@ onMounted(() => productsStore.loadProduct());
 
 <template>
   <div class="content-main">
-    <NuxtImg src="/baner-main.webp" />
+    <NuxtImg src="/images/baner-main.webp" />
     <span class="main-caption">Популярные товары</span>
     <div class="products-main">
       <template v-for="product in productsStore.getProducts" :key="product.id">
