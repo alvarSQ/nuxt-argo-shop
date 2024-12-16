@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const router = useRouter()
+
 const productsStore = useProductsStore();
 
 // const { data, status, execute } = await useFetchAuth(
@@ -13,7 +15,10 @@ const productsStore = useProductsStore();
 // const fN = computed(() => (data.value ? authStore.user.firstName : ''));
 // const pending = computed(() => (status.value === 'pending' ? true : false));
 
-onMounted(() => productsStore.allProducts());
+
+const removeSpaces = (title: string) => title = title.toLowerCase().replace(/\s/g, "-")
+
+onMounted(() => productsStore.loadProduct());
 // console.log(<NuxtImg>);
 </script>
 
@@ -23,7 +28,7 @@ onMounted(() => productsStore.allProducts());
     <span class="main-caption">Популярные товары</span>
     <div class="products-main">
       <template v-for="product in productsStore.getProducts" :key="product.id">
-        <UICardProduct :image="product.images[0]" :price="product.price" :title="product.title"/>
+        <UICardProduct :image="product.images[0]" :price="product.price" :title="product.title" @click="router.push(`/products/${product.id}`)"/>
       </template>
     </div>
     <!-- <UIPreloader v-if="pending" />
@@ -43,8 +48,9 @@ onMounted(() => productsStore.allProducts());
 }
 
 .main-caption {
-  font-family: 'Muller Extra';
-  font-size: wmax(24);
+  font-weight: 700;
+  letter-spacing: .4px;
+  font-size: wmax(26);
   color: rgb(66, 66, 66);
 }
 

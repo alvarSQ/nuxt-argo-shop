@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core';
+const router = useRouter()
 
 const { y: scrollY } = useWindowScroll();
 
@@ -16,7 +17,7 @@ const isHeader = computed(() => (scrollY.value < 30 ? true : false));
         </div>
         <div class="navbar-content">
           <div class="icon-block">
-            <div class="logo">АРГО</div>
+            <div class="logo" @click="router.push('/')">АРГО</div>
             <div class="btn catalog-btn">
               <div class="line-three">
                 <div></div>
@@ -175,6 +176,7 @@ const isHeader = computed(() => (scrollY.value < 30 ? true : false));
   color: $primary-color;
   font-size: 32px;
   padding-top: 8px;
+  cursor: pointer;
 }
 
 .choice {

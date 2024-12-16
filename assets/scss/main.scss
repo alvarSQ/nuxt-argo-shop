@@ -91,6 +91,7 @@ section,
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     cursor: pointer;
     height: 40px;
     font-size: 16px;
@@ -103,4 +104,16 @@ section,
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.flex-line {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

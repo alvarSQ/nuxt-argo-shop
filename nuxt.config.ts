@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     dir: 'assets/images',
     domains: ['dummyjson.com'],
   },
-  css: ['~/assets/scss/main.scss'],
+  css: ['@/assets/scss/main.scss'],
   vite: {
     css: {
       preprocessorOptions: {
