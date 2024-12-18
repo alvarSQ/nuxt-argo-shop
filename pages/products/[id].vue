@@ -5,8 +5,6 @@ const productsStore = useProductsStore();
 
 const { getProductById } = storeToRefs(useProductsStore());
 
-// const titleProduct = computed(() => (route.params.title as string).replace(/-/g, " "))
-
 const id = computed(() => route.params.id);
 const hasProduct = computed(() => (getProductById.value.title ? false : true));
 const discont = computed(
@@ -23,6 +21,7 @@ const int = ref(1);
 
 const countPlus = () => ++int.value;
 const countMinus = () => (int.value <= 1 ? int.value : --int.value);
+
 
 onMounted(async () => await productsStore.loadProduct(id.value as number));
 </script>
@@ -50,13 +49,18 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
         </div>
         <div class="flex-line">
           <div class="int center">{{ int }}</div>
-          <div>
-            <div class="count center" @click="countPlus">+</div>
-            <div class="count center" @click="countMinus">-</div>
+          <div class="arrow">
+            <div class="count center" @click="countPlus">&#9650;</div>
+            <div class="count center" @click="countMinus">&#9660;</div>
           </div>
           <div class="btn">В корзину</div>
-          <div class="int center fav">
-            <svg viewBox="0 0 23 23" width="26px" height="26px" fill="#fff">
+          <div class="int center favorite">
+            <svg
+              viewBox="0 0 23 23"
+              width="26px"
+              height="26px"
+              fill="currentColor"
+            >
               <path
                 d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"
               ></path>
@@ -64,14 +68,17 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
           </div>
         </div>
         <div class="flex-column">
-        <span><span class="gray">Код:</span> {{ getProductById.id }}</span>
-        <span><span class="gray">Баллы:</span> {{ getProductById.id }}</span>
-        <span><span class="gray">Производитель:</span> {{ getProductById.brand }}</span>
+          <span><span class="gray">Код:</span> {{ getProductById.id }}</span>
+          <span><span class="gray">Баллы:</span> {{ getProductById.id }}</span>
+          <span
+            ><span class="gray">Производитель:</span>
+            {{ getProductById.brand }}</span
+          >
         </div>
         <div class="btn one-click">Купить в один клик</div>
       </div>
-      <div class="div6">6</div>
-      <div class="div7">7</div>
+      <UIDescriptReview />
+      <div class="div7"></div>
     </div>
   </div>
 </template>
@@ -86,6 +93,7 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
 
 .int {
   aspect-ratio: 1 / 1;
+  user-select: none;
   height: 40px;
   border: 2px solid $primary-color;
   font-size: 20px;
@@ -93,23 +101,28 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
   border-radius: 10px;
 }
 
-.fav {
+.favorite {
+  color: $primary-color;
+  background-color: #fff;
+  cursor: pointer;
+}
+.favorite-on {
+  color: #fff;
   background-color: $primary-color;
   cursor: pointer;
 }
 
-.flex {
-  .btn {
-    margin-left: 5px;
-  }
+.arrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
+
 .count {
-  font-size: wmax(24);
-  font-weight: 900;
   user-select: none;
-  padding: 0 5px;
+  padding-right: 10px;
   color: $primary-color;
-  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -139,7 +152,7 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
 .div2 {
   grid-row: span 4 / span 4;
   grid-row-start: 2;
-  background-color: rgb(210, 250, 237);
+  background-color: #0796071e;
 }
 
 .div3 {
@@ -184,15 +197,9 @@ onMounted(async () => await productsStore.loadProduct(id.value as number));
   color: #999;
 }
 
-.div6 {
-  grid-column: span 2 / span 2;
-  grid-column-start: 2;
-  grid-row-start: 5;
-}
-
 .div7 {
   grid-column: span 2 / span 2;
   grid-column-start: 2;
-  grid-row-start: 4;
+  grid-row-start: 5;
 }
 </style>

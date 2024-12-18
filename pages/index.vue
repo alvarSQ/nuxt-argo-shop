@@ -23,7 +23,9 @@ onMounted(() => productsStore.loadProduct());
 
 <template>
   <div class="content-main">
+    <div class="baner-main">
     <NuxtImg src="/images/baner-main.webp" />
+    </div>
     <span class="main-caption">Популярные товары</span>
     <div class="products-main">
       <template v-for="product in productsStore.getProducts" :key="product.id">
@@ -39,6 +41,10 @@ onMounted(() => productsStore.loadProduct());
 
 <style lang="scss" scoped>
 @use '@/assets/scss/utils/vars.scss' as *;
+
+.baner-main {
+  height: wmax(282);
+}
 
 .products-main {
   display: grid;

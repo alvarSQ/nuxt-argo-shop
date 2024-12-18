@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core';
-const router = useRouter()
+const router = useRouter();
 
 const { y: scrollY } = useWindowScroll();
 
-const isHeader = computed(() => (scrollY.value < 30 ? true : false));
+const isHeader = computed(() => (scrollY.value < 30 ? false : true));
+
 </script>
 
 <template>
   <header>
-    <div class="navbar" :class="{'fix': !isHeader}">
+    <div class="navbar" :class="{ fix: isHeader }">
       <div class="container">
-        <div class="navbar-content menu-top" v-if="isHeader">
+        <div class="navbar-content menu-top" v-show="!isHeader">
           <span>Пермь, ул. Луначарского, 90</span>
           <div>Вход | Регистрация</div>
         </div>
@@ -87,7 +88,7 @@ const isHeader = computed(() => (scrollY.value < 30 ? true : false));
             </div>
           </div>
         </div>
-        <ul class="navbar-content menu-bottom" v-if="isHeader">
+        <ul class="navbar-content menu-bottom" v-show="!isHeader">
           <li>подобрать препарат</li>
           <li>НОВОСТИ</li>
           <li>СТАТЬИ</li>
