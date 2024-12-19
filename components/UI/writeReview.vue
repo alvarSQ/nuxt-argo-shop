@@ -36,6 +36,10 @@
 <style lang="scss" scoped>
 @use '@/assets/scss/utils/vars.scss' as *;
 
+label {
+  font-size: wmax(16);
+}
+
 .btn {
   margin-top: 10px;
 }
@@ -63,7 +67,7 @@
 }
 
 .flex-line {
-  width: 60%;
+  width: 70%;
   justify-content: space-between;
 }
 </style>

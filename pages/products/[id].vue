@@ -4,9 +4,10 @@ const route = useRoute('products-id');
 const productsStore = useProductsStore();
 
 const { getProductById } = storeToRefs(useProductsStore());
+const { isLoading } = storeToRefs(useAllStore());
 
 const id = computed(() => route.params.id);
-const hasProduct = computed(() => (getProductById.value.title ? false : true));
+const hasProduct = computed(() => (getProductById.value.title && isLoading ? false : true));
 const discont = computed(
   () =>
     (getProductById.value.price -
@@ -77,7 +78,7 @@ onMounted(async () => {
     <div class="div6">
     <UIDescriptReview />
     </div>
-    <div class="div7">7</div>
+    <div class="div7"></div>
   </div>
 </template>
 

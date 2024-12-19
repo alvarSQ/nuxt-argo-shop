@@ -3,13 +3,6 @@ import { defineStore } from 'pinia';
 const URL = 'https://dummyjson.com/products/';
 
 export const useProductsStore = defineStore('products', () => {
-  interface IProductsList {
-    products: IProduct[];
-    total: number;
-    skip: number;
-    limit: number;
-  }
-
   const products = ref([] as IProduct[]);
   const productById = ref({} as IProduct);
 
@@ -19,22 +12,28 @@ export const useProductsStore = defineStore('products', () => {
   // const getProductsById = computed(() => (id: number) => products.find(el => el.id === id))
 
   const loadProduct = async (id = '') => {
+    const { isLoading } = storeToRefs(useAllStore());
+    isLoading.value = true;
     try {
       const data = await $fetch(`${URL}${id}`);
-      id ? productById.value = data as IProduct : products.value = (data as IProductsList).products;      
+      id
+        ? (productById.value = data as IProduct)
+        : (products.value = (data as IProductsList).products);
     } catch (e) {
       console.log((e as Error).message);
+    } finally {
+      isLoading.value = false;
     }
   };
 
   const getBreadCrumbs = () => {
     const { breadCrumbs } = storeToRefs(useAllStore());
-    breadCrumbs.value = []
+    breadCrumbs.value = [];
     breadCrumbs.value.push(
-      productById.value.category,
+      productById.value.category.replace('-', ' '),
       productById.value.title
     );
-  }
+  };
 
   return { getProducts, getProductById, loadProduct, getBreadCrumbs };
 });
