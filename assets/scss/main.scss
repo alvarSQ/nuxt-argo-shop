@@ -117,3 +117,14 @@ section,
   flex-direction: column;
   gap: 5px;
 }
+
+.content {
+  margin-top: 150px;
+}
+
+.title {
+  color: $primary-color;
+  font-size: wmax(20);
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}

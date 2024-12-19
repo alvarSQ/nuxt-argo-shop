@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   // ssr: false,
   image: {
-    provider: 'netlify',
+    // provider: 'netlify',
     format: ['webp'],
     domains: ['cdn.dummyjson.com'],
   },

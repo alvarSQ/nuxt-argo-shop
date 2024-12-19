@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const router = useRouter()
+const router = useRouter();
 
 const productsStore = useProductsStore();
+
+definePageMeta({
+  layout: 'main'
+})
 
 // const { data, status, execute } = await useFetchAuth(
 //   'https://dummyjson.com/auth/me'
@@ -15,7 +19,6 @@ const productsStore = useProductsStore();
 // const fN = computed(() => (data.value ? authStore.user.firstName : ''));
 // const pending = computed(() => (status.value === 'pending' ? true : false));
 
-
 // const removeSpaces = (title: string) => title = title.toLowerCase().replace(/\s/g, "-")
 
 onMounted(() => productsStore.loadProduct());
@@ -24,12 +27,19 @@ onMounted(() => productsStore.loadProduct());
 <template>
   <div class="content-main">
     <div class="baner-main">
-    <NuxtImg src="/images/baner-main.webp" />
+      <NuxtImg src="/images/baner-main.webp" />
     </div>
     <span class="main-caption">Популярные товары</span>
     <div class="products-main">
       <template v-for="product in productsStore.getProducts" :key="product.id">
-        <UICardProduct :image="product.images[0]" :price="product.price" :title="product.title" @click="router.push(`/products/${product.id}`)"/>
+        <UICardProduct
+          :image="product.images[0]"
+          :price="product.price"
+          :title="product.title"
+          @click="
+            navigateTo({ name: 'products-id', params: { id: product.id } })
+          "
+        />
       </template>
     </div>
     <!-- <UIPreloader v-if="pending" />
@@ -54,7 +64,7 @@ onMounted(() => productsStore.loadProduct());
 
 .main-caption {
   font-weight: 700;
-  letter-spacing: .4px;
+  letter-spacing: 0.4px;
   font-size: wmax(26);
   color: rgb(66, 66, 66);
 }
@@ -62,7 +72,7 @@ onMounted(() => productsStore.loadProduct());
 .content-main {
   display: flex;
   flex-direction: column;
-  margin-top: 132px;
+  margin-top: -18px;
   gap: 20px;
 }
 </style>
