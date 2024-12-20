@@ -6,5 +6,7 @@ export const useAllStore = defineStore('all', () => {
 
   const isLoading = ref(false)
 
-  return { breadCrumbs, isLoading };
+  const searchQuery = ref('');
+
+  return { breadCrumbs, isLoading, searchQuery };
 });

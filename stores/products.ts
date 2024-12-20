@@ -5,6 +5,7 @@ const URL = 'https://dummyjson.com/products/';
 export const useProductsStore = defineStore('products', () => {
   const products = ref([] as IProduct[]);
   const productById = ref({} as IProduct);
+  const productsBySearch = ref([] as IProduct[]);
 
   const getProducts = computed(() => products.value);
   const getProductById = computed(() => productById.value);

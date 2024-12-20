@@ -9,8 +9,8 @@ onMounted(async () => await сategoriesStore.loadCategories());
 
 <template>
   <ul class="сategories flex-column">
-    <li v-for="сategory in getCategories" :key="сategory.slug">
-      <span @click="navigateTo({ name: 'сategory-slug', params: { slug: сategory.slug } })">{{ сategory.name }}</span>
+    <li v-for="category in getCategories" :key="category.slug">
+      <span @click="navigateTo({ name: 'category-slug', params: { slug: category.slug } })">{{ category.name }}</span>
     </li>
   </ul>
 </template>

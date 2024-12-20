@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useСategoriesStore } from '@/stores/categories';
-const route = useRoute('сategory-slug');
+const route = useRoute('category-slug');
 
 const сategoriesStore = useСategoriesStore();
 const { getProductsByCategory } = storeToRefs(useСategoriesStore());
@@ -40,10 +40,5 @@ onMounted(async () => {
 </template>
 
 <style lang="scss" scoped>
-.products-list {
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
+
 </style>

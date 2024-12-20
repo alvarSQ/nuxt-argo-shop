@@ -4,7 +4,7 @@ const { breadCrumbs } = storeToRefs(useAllStore());
 const inSlugCategory = (str: string) => {
   if (breadCrumbs.value[0] === str)
     navigateTo({
-      name: 'сategory-slug',
+      name: 'category-slug',
       params: { slug: str.replace(' ', '-') },
     });
 };
