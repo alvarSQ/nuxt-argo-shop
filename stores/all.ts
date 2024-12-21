@@ -8,5 +8,9 @@ export const useAllStore = defineStore('all', () => {
 
   const searchQuery = ref('');
 
-  return { breadCrumbs, isLoading, searchQuery };
+  const limitScroll = ref(16)
+
+  const productsTotal = ref(0)
+
+  return { breadCrumbs, isLoading, searchQuery, limitScroll, productsTotal };
 });

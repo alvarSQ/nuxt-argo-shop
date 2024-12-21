@@ -1,52 +1,37 @@
 <script setup lang="ts">
-const { breadCrumbs, searchQuery } = storeToRefs(useAllStore());
+const productsStore = useProductsStore();
+
+const { breadCrumbs, searchQuery, productsTotal, limitScroll, isLoading } = storeToRefs(useAllStore());
+const { getProductsBySearch } = storeToRefs(useProductsStore());
+
 const route = useRoute('products-search');
 
-const q = computed(() => route.query.q);
+const queryRoute = computed(() => route.query.q);
 
-const productsSerchAll = ref([] as IProduct[]);
+const skip = ref(0)
 
-const skip = ref(0);
-
-const { data, status, execute } = await useFetch(
-  'https://dummyjson.com/products/search',
-  {
-    params: { q, limit: 16, skip }
-  }
-);
-
-const productsInfinite = async () => {
-  if (
-    skip.value !== 0 &&
-    skip.value >= (data.value as IProductsList).total
-  )
-    return;
-  if (pending.value) return;
-  skip.value = productsSerchAll.value.length;
-  await execute();
-  productsSerchAll.value.push(...(data.value as IProductsList).products);
+const productsInfinite = () => {
+  if (skip.value !== 0 && skip.value >= productsTotal.value) return;
+  if (isLoading.value)  return;
+  return productsStore.searchProducts(skip.value, queryRoute.value as string);
 };
 
 const checkPosition = () => {
   // Высота документа и экрана
   const height = document.body.offsetHeight;
   const screenHeight = window.innerHeight;
-
   // Сколько пикселей уже проскроллили
   const scrolled = window.scrollY;
-
   // Порог
   const threshold = height - screenHeight / 4;
-
   // Низ экрана относительно страницы
   const position = scrolled + screenHeight;
 
-  if (position >= threshold) {
-    productsInfinite();
+  if (position >= threshold && productsTotal.value >= limitScroll.value) {
+    skip.value = getProductsBySearch.value.length
+    productsInfinite()
   }
-}
-
-const pending = computed(() => (status.value === 'pending' ? true : false));
+};
 
 const num_word = (value: number): string => {
   const words = ['товар', 'товара', 'товаров'];
@@ -62,10 +47,18 @@ const formatProductsCount = (count: number): string => {
   return `${count} ${num_word(count)}`;
 };
 
+watch(
+  () => route.query.q,
+  () => {
+    skip.value = 0
+    return productsStore.searchProducts(skip.value, queryRoute.value as string);
+  },
+);
+
 onMounted(() => {
   breadCrumbs.value = [];
-  productsInfinite();
   window.addEventListener('scroll', checkPosition);
+  productsStore.searchProducts(skip.value, queryRoute.value as string)
 });
 onUnmounted(() => {
   searchQuery.value = '';
@@ -75,12 +68,11 @@ onUnmounted(() => {
 
 <template>
   <span class="title" style="font-weight: 400"
-    >По запросу <span style="font-weight: 900">{{ q }}</span> найдено:
-    {{ formatProductsCount((data as IProductsList).total) }}</span
+    >По запросу <span style="font-weight: 900">{{ queryRoute }}</span> найдено:
+    {{ formatProductsCount(productsTotal) }}</span
   >
-  <!-- <UIPreloader v-if="pending" /> -->
   <div class="products-list">
-    <template v-for="product in productsSerchAll" :key="product.id">
+    <template v-for="product in getProductsBySearch" :key="product.id">
       <UICardProduct
         :image="product.images[0]"
         :price="product.price"

@@ -9,6 +9,7 @@ export const useProductsStore = defineStore('products', () => {
 
   const getProducts = computed(() => products.value);
   const getProductById = computed(() => productById.value);
+  const getProductsBySearch = computed(() => productsBySearch.value);
 
   // const getProductsById = computed(() => (id: number) => products.find(el => el.id === id))
 
@@ -27,6 +28,26 @@ export const useProductsStore = defineStore('products', () => {
     }
   };
 
+  const searchProducts = async (skip: number, q: string) => {
+    const { isLoading, limitScroll, productsTotal } =
+      storeToRefs(useAllStore());
+    isLoading.value = true;    
+    try {
+      const data = await $fetch(`${URL}/search`, {
+        params: { q, limit: limitScroll.value, skip },
+      });
+      if (skip === 0) {
+        productsBySearch.value = [];
+      }
+      productsBySearch.value.push(...(data as IProductsList).products); 
+      productsTotal.value = (data as IProductsList).total;
+    } catch (e) {
+      console.log((e as Error).message);
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   const getBreadCrumbs = () => {
     const { breadCrumbs } = storeToRefs(useAllStore());
     breadCrumbs.value = [];
@@ -36,5 +57,12 @@ export const useProductsStore = defineStore('products', () => {
     );
   };
 
-  return { getProducts, getProductById, loadProduct, getBreadCrumbs };
+  return {
+    getProducts,
+    getProductById,
+    getProductsBySearch,
+    loadProduct,
+    getBreadCrumbs,
+    searchProducts
+  };
 });
