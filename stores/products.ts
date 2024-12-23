@@ -7,14 +7,14 @@ export const useProductsStore = defineStore('products', () => {
   const productById = ref({} as IProduct);
   const productsBySearch = ref([] as IProduct[]);
 
-  const getProducts = computed(() => products.value);
-  const getProductById = computed(() => productById.value);
-  const getProductsBySearch = computed(() => productsBySearch.value);
+  // const getProducts = computed(() => products.value);
+  // const getProductById = computed(() => productById.value);
+  // const getProductsBySearch = computed(() => productsBySearch.value);
 
   // const getProductsById = computed(() => (id: number) => products.find(el => el.id === id))
 
   const loadProduct = async (id = '') => {
-    const { isLoading } = storeToRefs(useAllStore());
+    const { isLoading } = storeToRefs(useAllStore());    
     isLoading.value = true;
     try {
       const data = await $fetch(`${URL}${id}`);
@@ -58,9 +58,9 @@ export const useProductsStore = defineStore('products', () => {
   };
 
   return {
-    getProducts,
-    getProductById,
-    getProductsBySearch,
+    products,
+    productById,
+    productsBySearch,
     loadProduct,
     getBreadCrumbs,
     searchProducts

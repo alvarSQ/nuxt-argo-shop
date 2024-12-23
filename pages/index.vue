@@ -2,10 +2,13 @@
 const router = useRouter();
 
 const productsStore = useProductsStore();
+const { products } = storeToRefs(useProductsStore());
 
 definePageMeta({
   layout: 'main'
 })
+
+await callOnce(() => productsStore.loadProduct())
 
 // const { data, status, execute } = await useFetchAuth(
 //   'https://dummyjson.com/auth/me'
@@ -20,8 +23,8 @@ definePageMeta({
 // const pending = computed(() => (status.value === 'pending' ? true : false));
 
 // const removeSpaces = (title: string) => title = title.toLowerCase().replace(/\s/g, "-")
-
-onMounted(() => productsStore.loadProduct());
+// productsStore.loadProduct()
+// onMounted(() => productsStore.loadProduct());
 </script>
 
 <template>
@@ -31,15 +34,13 @@ onMounted(() => productsStore.loadProduct());
     </div>
     <span class="main-caption">Популярные товары</span>
     <div class="products-main">
-      <template v-for="product in productsStore.getProducts" :key="product.id">
+      <template v-for="product in products" :key="product.id">
+        <NuxtLink :to="{ name: 'products-id', params: { id: product.id } }">
         <UICardProduct
           :image="product.images[0]"
           :price="product.price"
           :title="product.title"
-          @click="
-            navigateTo({ name: 'products-id', params: { id: product.id } })
-          "
-        />
+        /></NuxtLink>
       </template>
     </div>
     <!-- <UIPreloader v-if="pending" />

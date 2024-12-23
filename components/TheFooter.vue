@@ -5,7 +5,7 @@
 <template>
     <footer>
 
-fwefwef
+
     </footer>
 </template>
 

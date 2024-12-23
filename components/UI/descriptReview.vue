@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core';
-const { getProductById } = storeToRefs(useProductsStore());
+const { productById } = storeToRefs(useProductsStore());
 
 const descriptTitles = ref([
   {
@@ -28,8 +28,8 @@ const descriptTitleActiv = (title: string) => {
 
 const descriptActiv = computed(() =>
   descriptActivTitle.value === 'Описание'
-    ? getProductById.value.description
-    : getProductById.value.reviews
+    ? productById.value.description
+    : productById.value.reviews
 );
 
 const dataFromString = (dateStr: string) => {
@@ -59,7 +59,7 @@ const dataFromString = (dateStr: string) => {
             <ul class="reviews-left flex-column">
               <li
                 class="flex-column"
-                v-for="(review, index) in getProductById.reviews"
+                v-for="(review, index) in productById.reviews"
                 :key="index"
               >
                 <div>

@@ -2,15 +2,15 @@
 import { useСategoriesStore } from '@/stores/categories';
 
 const сategoriesStore = useСategoriesStore();
-const { getCategories } = storeToRefs(useСategoriesStore());
+const { categories } = storeToRefs(useСategoriesStore());
 
-onMounted(async () => await сategoriesStore.loadCategories());
+await callOnce(() => сategoriesStore.loadCategories())
 </script>
 
 <template>
   <ul class="сategories flex-column">
-    <li v-for="category in getCategories" :key="category.slug">
-      <span @click="navigateTo({ name: 'category-slug', params: { slug: category.slug } })">{{ category.name }}</span>
+    <li v-for="category in categories" :key="category.slug">
+      <NuxtLink :to="{ name: 'category-slug', params: { slug: category.slug } }"><span>{{ category.name }}</span></NuxtLink>
     </li>
   </ul>
 </template>

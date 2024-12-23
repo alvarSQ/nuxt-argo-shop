@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core';
-const router = useRouter();
 
 const { y: scrollY } = useWindowScroll();
 
@@ -18,7 +17,8 @@ const isHeader = computed(() => (scrollY.value < 30 ? false : true));
         </div>
         <div class="navbar-content">
           <div class="icon-block">
-            <div class="logo" @click="router.push('/')">АРГО</div>
+            <NuxtLink to="/"><div class="logo">АРГО</div></NuxtLink>            
+            <NuxtLink to="/category/beauty">
             <div class="btn catalog-btn">
               <div class="line-three">
                 <div></div>
@@ -27,6 +27,7 @@ const isHeader = computed(() => (scrollY.value < 30 ? false : true));
               </div>
               Каталог
             </div>
+            </NuxtLink>
           </div>
           <UISearchForm />
           <div class="icon-block">

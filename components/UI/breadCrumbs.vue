@@ -12,8 +12,8 @@ const inSlugCategory = (str: string) => {
 
 <template>
   <div class="bread-crumbs">
-    <span @click="navigateTo('/')">Home</span
-    ><span
+    <NuxtLink to="/"><span>Home</span></NuxtLink>
+    <span
       v-for="(breadCrumb, index) in breadCrumbs"
       :key="index"
       @click="inSlugCategory(breadCrumb)"

@@ -2,7 +2,7 @@
 const productsStore = useProductsStore();
 
 const { breadCrumbs, searchQuery, productsTotal, limitScroll, isLoading } = storeToRefs(useAllStore());
-const { getProductsBySearch } = storeToRefs(useProductsStore());
+const { productsBySearch } = storeToRefs(useProductsStore());
 
 const route = useRoute('products-search');
 
@@ -10,10 +10,12 @@ const queryRoute = computed(() => route.query.q);
 
 const skip = ref(0)
 
+await callOnce(() => productsStore.searchProducts(skip.value, queryRoute.value as string))
+
 const productsInfinite = () => {
   if (skip.value !== 0 && skip.value >= productsTotal.value) return;
-  if (isLoading.value)  return;
-  return productsStore.searchProducts(skip.value, queryRoute.value as string);
+  if (isLoading.value) return;  
+  return productsStore.searchProducts(skip.value, queryRoute.value as string)
 };
 
 const checkPosition = () => {
@@ -28,7 +30,7 @@ const checkPosition = () => {
   const position = scrolled + screenHeight;
 
   if (position >= threshold && productsTotal.value >= limitScroll.value) {
-    skip.value = getProductsBySearch.value.length
+    skip.value = productsBySearch.value.length
     productsInfinite()
   }
 };
@@ -55,10 +57,12 @@ watch(
   },
 );
 
+
+
+
 onMounted(() => {
   breadCrumbs.value = [];
   window.addEventListener('scroll', checkPosition);
-  productsStore.searchProducts(skip.value, queryRoute.value as string)
 });
 onUnmounted(() => {
   searchQuery.value = '';
@@ -72,7 +76,7 @@ onUnmounted(() => {
     {{ formatProductsCount(productsTotal) }}</span
   >
   <div class="products-list">
-    <template v-for="product in getProductsBySearch" :key="product.id">
+    <template v-for="product in productsBySearch" :key="product.id">
       <UICardProduct
         :image="product.images[0]"
         :price="product.price"

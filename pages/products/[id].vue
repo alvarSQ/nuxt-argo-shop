@@ -3,15 +3,15 @@ const route = useRoute('products-id');
 
 const productsStore = useProductsStore();
 
-const { getProductById } = storeToRefs(useProductsStore());
+const { productById } = storeToRefs(useProductsStore());
 const { isLoading } = storeToRefs(useAllStore());
 
 const id = computed(() => route.params.id);
-const hasProduct = computed(() => (getProductById.value.title && isLoading ? false : true));
+const hasProduct = computed(() => (productById.value.title && isLoading ? false : true));
 const discont = computed(
   () =>
-    (getProductById.value.price -
-      (getProductById.value.price * getProductById.value.discountPercentage) /
+    (productById.value.price -
+      (productById.value.price * productById.value.discountPercentage) /
         100) *
     int.value
 );
@@ -23,24 +23,27 @@ const int = ref(1);
 const countPlus = () => ++int.value;
 const countMinus = () => (int.value <= 1 ? int.value : --int.value);
 
-onMounted(async () => {
-  await productsStore.loadProduct(id.value)
-  productsStore.getBreadCrumbs()
-});
+await callOnce(() => productsStore.loadProduct(id.value))
+await callOnce(() => productsStore.getBreadCrumbs())
+
+// onMounted(async () => {
+//   await productsStore.loadProduct(id.value)
+//   productsStore.getBreadCrumbs()
+// });
 </script>
 
 <template>
   <UIPreloader v-if="hasProduct" />
   <div class="parent" v-else>
-    <div class="div3 title">{{ getProductById.title }}</div>
+    <div class="div3 title">{{ productById.title }}</div>
     <div class="div4 center">
-      <NuxtImg :src="getProductById.images[0]" />
+      <NuxtImg :src="productById.images[0]" />
     </div>
     <div class="div5">
-      <span class="title-main">{{ getProductById.title }}</span>
+      <span class="title-main">{{ productById.title }}</span>
       <div>
         <span class="price-discont"
-          >{{ getProductById.price }}<span>&nbsp;₽</span></span
+          >{{ productById.price }}<span>&nbsp;₽</span></span
         ><span class="price"
           >&nbsp;{{ round_mod(discont) }}<span>&nbsp;₽</span></span
         >
@@ -66,11 +69,11 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex-column">
-        <span><span class="gray">Код:</span> {{ getProductById.id }}</span>
-        <span><span class="gray">Баллы:</span> {{ getProductById.id }}</span>
+        <span><span class="gray">Код:</span> {{ productById.id }}</span>
+        <span><span class="gray">Баллы:</span> {{ productById.id }}</span>
         <span
           ><span class="gray">Производитель:</span>
-          {{ getProductById.brand }}</span
+          {{ productById.brand }}</span
         >
       </div>
       <div class="btn one-click">Купить в один клик</div>

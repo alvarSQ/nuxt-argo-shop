@@ -3,10 +3,12 @@ import { useСategoriesStore } from '@/stores/categories';
 const route = useRoute('category-slug');
 
 const сategoriesStore = useСategoriesStore();
-const { getProductsByCategory } = storeToRefs(useСategoriesStore());
+const { productsByCategory } = storeToRefs(useСategoriesStore());
 const { breadCrumbs, isLoading } = storeToRefs(useAllStore());
 
 const slug = computed(() => route.params.slug);
+
+await callOnce(() => сategoriesStore.loadCategories(slug.value))
 
 const getBreadCrumbs = () => {
   breadCrumbs.value = [];
@@ -18,23 +20,24 @@ const titleCategory = computed(() => {
   return str.toUpperCase();
 });
 
-onMounted(async () => {
-  getBreadCrumbs();
-  await сategoriesStore.loadCategories(slug.value);
-});
+
+onMounted(() => {
+  сategoriesStore.loadCategories(slug.value);
+  getBreadCrumbs()
+})
 </script>
 
 <template>
   <span class="title">{{ titleCategory }}</span>
   <UIPreloader v-if="isLoading" />
   <div class="products-list" v-else>
-    <template v-for="product in getProductsByCategory" :key="product.id">
-      <UICardProduct
-        :image="product.images[0]"
-        :price="product.price"
-        :title="product.title"
-        @click="navigateTo({ name: 'products-id', params: { id: product.id } })"
-      />
+    <template v-for="product in productsByCategory" :key="product.id">
+      <NuxtLink :to="{ name: 'products-id', params: { id: product.id } }">
+        <UICardProduct
+          :image="product.images[0]"
+          :price="product.price"
+          :title="product.title"
+        /></NuxtLink>
     </template>
   </div>
 </template>

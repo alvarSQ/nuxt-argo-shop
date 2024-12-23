@@ -7,10 +7,10 @@ export const useСategoriesStore = defineStore('categories', () => {
 
   const productsByCategory = ref([] as IProduct[]);
 
-  const getCategories = computed(() => categories.value);
-  const getProductsByCategory = computed(() => productsByCategory.value);
+  // const getCategories = computed(() => categories.value);
+  // const getProductsByCategory = computed(() => productsByCategory.value);
 
-  const loadCategories = async (slug = '') => {
+  const loadCategories = async (slug = '') => {      
     const { isLoading } = storeToRefs(useAllStore());
     isLoading.value = true;
     let url = `${URL}categories`;
@@ -28,5 +28,5 @@ export const useСategoriesStore = defineStore('categories', () => {
     }
   };
 
-  return { getCategories, getProductsByCategory, loadCategories };
+  return { categories, productsByCategory, loadCategories };
 });
